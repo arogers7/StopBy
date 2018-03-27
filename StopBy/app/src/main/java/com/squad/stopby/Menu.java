@@ -42,6 +42,7 @@ public class Menu extends AppCompatActivity {
     private LocationListener locationListener;
     private String userLatitude;
     private String userLongitude;
+    private String userName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +72,22 @@ public class Menu extends AppCompatActivity {
             }
         });
 
+        menu_profileBtn.setOnClickListener( new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                toProfile();
+            }
+        });
+
+        //Check for permission to get users location
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED)
+        {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        }else{
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+        }
 
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         locationListener = new LocationListener() {
@@ -91,28 +108,25 @@ public class Menu extends AppCompatActivity {
             public void onProviderDisabled(String s) {}
         };
 
-        //Check for permission to get users location
-        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED)
-        {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-        }else{
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-        }
+
     }
+
+
 
     //authenticate users
     @Override
     public void onStart() {
         super.onStart();
         FirebaseUser currentUser = mAuth.getCurrentUser();
+
         if(currentUser ==  null) {
             Intent intent = new Intent(this, StartupActivity.class);
             startActivity(intent);
             finish();
         } else {
-            Toast.makeText(this, "Welcome back brodie", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Welcome back "+ currentUser, Toast.LENGTH_SHORT).show();
         }
+
     }
 
     //create the menu on top
@@ -153,6 +167,7 @@ public class Menu extends AppCompatActivity {
         Intent goToPost = new Intent(this, Post.class);
         goToPost.putExtra("Latitude", userLatitude);
         goToPost.putExtra("Longitude", userLongitude);
+        goToPost.putExtra("username",userName);
         startActivity(goToPost);
     }
 
@@ -160,6 +175,13 @@ public class Menu extends AppCompatActivity {
         Intent goToMap = new Intent(this, MapsActivity.class);
         goToMap.putExtra("Latitude", userLatitude);
         goToMap.putExtra("Longitude", userLongitude);
+        goToMap.putExtra("username",userName);
+
         startActivity(goToMap);
+    }
+    private void toProfile() {
+        Intent goToProfile = new Intent(this, ProfileActivity.class);
+        goToProfile.putExtra("username",userName);
+        startActivity(goToProfile);
     }
 }

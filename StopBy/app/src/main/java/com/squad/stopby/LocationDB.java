@@ -65,7 +65,7 @@ public class LocationDB {
 
     public void pushToDatabase(DatabaseReference databaseReference){
         final String location = "Location";
-        this.uid = databaseReference.child(location).push().getKey();
-        databaseReference.child(location).child(this.uid).setValue(this);
+        this.uid = databaseReference.child(location).push().getKey(); //get user ID
+        databaseReference.child(location).child(this.uid).setValue(this); //set database/location/user/key value to location
     }
 }

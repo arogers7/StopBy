@@ -1,5 +1,7 @@
 package com.squad.stopby;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 /**
 <<<<<<< HEAD
  * Created by Yuanjian on 3/15/2018.
@@ -13,15 +15,17 @@ public class Profile {
     private String email;
     private String password;
     private String userInfo;
+    private String uID;
 
 
 
 
-    public Profile(String username, String email, String password, String userInfo) {
+    public Profile(String username, String email, String password, String userInfo, String uid) {
         this.username = username;
         this.email = email;
         this.password = password;
         this.userInfo = userInfo;
+        this.uID = uid;
 
     }
 
@@ -49,7 +53,6 @@ public class Profile {
         this.password = password;
     }
 
-
     public String getUserInfo() {
         return userInfo;
     }
@@ -57,4 +60,13 @@ public class Profile {
     public void setUserInfo(String userInfo) {
         this.userInfo = userInfo;
     }
+
+    public String getuID(){
+        return uID;
+    }
+
+    public void setuID(String uid){
+        this.uID = uid;
+    }
+
 }

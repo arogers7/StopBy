@@ -28,6 +28,8 @@ public class RegistrationActivity extends AppCompatActivity {
     private DatabaseReference mDatabaseReference;
 
     private Profile userProfile;
+    private String password;
+    private String uID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,22 +51,26 @@ public class RegistrationActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String username = register_username.getText().toString();
                 String email = register_email.getText().toString();
-                String password = register_password.getText().toString();
+                password = register_password.getText().toString();
                 String userInfo = register_userInfo.getText().toString();
-                userProfile = new Profile(username, email, password, userInfo);
-                registerUsers(email, password);
+                //userProfile = new Profile(username, email, password, userInfo);
+
+                registerUsers(email, password,username,userInfo);
             }
         });
 
     }
 
-    private void registerUsers(String email, String password) {
+    private void registerUsers(final String email, final String password, final String username, final String userInfo) {
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            uID = mAuth.getCurrentUser().getUid();
+                            userProfile = new Profile(username, email, password, userInfo,uID);
                             mDatabaseReference.push().setValue(userProfile);
+
                             //update UI
                             Intent intent = new Intent(RegistrationActivity.this, Menu.class);
                             startActivity(intent);

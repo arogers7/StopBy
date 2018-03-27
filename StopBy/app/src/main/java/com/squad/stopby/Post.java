@@ -31,6 +31,7 @@ public class Post extends AppCompatActivity {
 
     String userLatitude;
     String userLongitude;
+    String username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +41,7 @@ public class Post extends AppCompatActivity {
 
         userLatitude = getIntent().getStringExtra("Latitude");
         userLongitude = getIntent().getStringExtra("Longitude");
+        username  = getIntent().getStringExtra("Username");
 
         //Instance of Firebase
         final Database database = new Database();
