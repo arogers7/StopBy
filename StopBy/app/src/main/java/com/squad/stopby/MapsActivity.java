@@ -105,22 +105,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     Log.d("CREATION", value.getLatitude());
                     Log.d("CREATION", value.getLongitude());
                 }
-                mMap.clear();
                 for(LocationDB loc: locations) {
-                    if(loc.getUsername().equals(username)){
                         mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(loc.getLatitude()) - locations.indexOf(loc) * coordinate_offset, Double.parseDouble(loc.getLongitude()) - locations.indexOf(loc) * coordinate_offset))
                                 .title(loc.getUsername())
                                 .snippet(loc.getPost())
                                 .icon(BitmapDescriptorFactory
                                         .defaultMarker(BitmapDescriptorFactory.HUE_CYAN)));
-                    }
-                    else {
-                        mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(loc.getLatitude()) - locations.indexOf(loc) * coordinate_offset, Double.parseDouble(loc.getLongitude()) - locations.indexOf(loc) * coordinate_offset))
-                                .title(loc.getUsername())
-                                .snippet(loc.getPost())
-                                .icon(BitmapDescriptorFactory
-                                        .defaultMarker(BitmapDescriptorFactory.HUE_CYAN)));
-                    }
+
                 }
             }
 
